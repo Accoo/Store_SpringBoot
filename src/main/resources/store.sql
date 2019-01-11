@@ -1,11 +1,12 @@
+DROP DATABASE IF EXISTS `store`;
+CREATE DATABASE `store`;
+USE store;
+
 SET NAMES utf8;
 SET FOREIGN_KEY_CHECKS = 0;
 
--- ----------------------------
---  Table structure for `cart`
--- ----------------------------
-DROP TABLE IF EXISTS `cart`;
-CREATE TABLE `cart` (
+DROP TABLE IF EXISTS `store_cart`;
+CREATE TABLE `store_cart` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) NOT NULL,
   `product_id` int(11) DEFAULT NULL COMMENT '商品id',
@@ -17,11 +18,8 @@ CREATE TABLE `cart` (
   KEY `user_id_index` (`user_id`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=146 DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Table structure for `category`
--- ----------------------------
-DROP TABLE IF EXISTS `category`;
-CREATE TABLE `category` (
+DROP TABLE IF EXISTS `store_category`;
+CREATE TABLE `store_category` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '类别Id',
   `parent_id` int(11) DEFAULT NULL COMMENT '父类别id当id=0时说明是根节点,一级类别',
   `name` varchar(50) DEFAULT NULL COMMENT '类别名称',
@@ -32,11 +30,8 @@ CREATE TABLE `category` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=100032 DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Table structure for `order`
--- ----------------------------
-DROP TABLE IF EXISTS `order`;
-CREATE TABLE `order` (
+DROP TABLE IF EXISTS `store_order`;
+CREATE TABLE `store_order` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '订单id',
   `order_no` bigint(20) DEFAULT NULL COMMENT '订单号',
   `user_id` int(11) DEFAULT NULL COMMENT '用户id',
@@ -55,11 +50,8 @@ CREATE TABLE `order` (
   UNIQUE KEY `order_no_index` (`order_no`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=118 DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Table structure for `order_item`
--- ----------------------------
-DROP TABLE IF EXISTS `order_item`;
-CREATE TABLE `order_item` (
+DROP TABLE IF EXISTS `store_order_item`;
+CREATE TABLE `store_order_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '订单子表id',
   `user_id` int(11) DEFAULT NULL,
   `order_no` bigint(20) DEFAULT NULL,
@@ -76,11 +68,8 @@ CREATE TABLE `order_item` (
   KEY `order_no_user_id_index` (`user_id`,`order_no`) USING BTREE
 ) ENGINE=InnoDB AUTO_INCREMENT=135 DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Table structure for `pay_info`
--- ----------------------------
-DROP TABLE IF EXISTS `pay_info`;
-CREATE TABLE `pay_info` (
+DROP TABLE IF EXISTS `store_pay_info`;
+CREATE TABLE `store_pay_info` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL COMMENT '用户id',
   `order_no` bigint(20) DEFAULT NULL COMMENT '订单号',
@@ -92,11 +81,8 @@ CREATE TABLE `pay_info` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=61 DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Table structure for `product`
--- ----------------------------
-DROP TABLE IF EXISTS `product`;
-CREATE TABLE `product` (
+DROP TABLE IF EXISTS `store_product`;
+CREATE TABLE `store_product` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '商品id',
   `category_id` int(11) NOT NULL COMMENT '分类id,对应category表的主键',
   `name` varchar(100) NOT NULL COMMENT '商品名称',
@@ -112,11 +98,8 @@ CREATE TABLE `product` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Table structure for `shipping`
--- ----------------------------
-DROP TABLE IF EXISTS `address`;
-CREATE TABLE `address` (
+DROP TABLE IF EXISTS `store_address`;
+CREATE TABLE `store_address` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `user_id` int(11) DEFAULT NULL COMMENT '用户id',
   `receiver_name` varchar(20) DEFAULT NULL COMMENT '收货姓名',
@@ -132,11 +115,8 @@ CREATE TABLE `address` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=utf8;
 
--- ----------------------------
---  Table structure for `user`
--- ----------------------------
-DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
+DROP TABLE IF EXISTS `store_user`;
+CREATE TABLE `store_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT COMMENT '用户表id',
   `username` varchar(50) NOT NULL COMMENT '用户名',
   `password` varchar(50) NOT NULL COMMENT '用户密码，MD5加密',
