@@ -1,0 +1,25 @@
+/target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+# package file
+*.war
+*.ear
+
+# maven
+target/
+
+# temp
+*.log
+*.cache
+*.diff
+*.patch
+*.tmp
+
+# Mac
+.DS_Store
