@@ -1,9 +1,16 @@
 package cn.bluebubbles.store.service;
 
+import cn.bluebubbles.store.common.ServerResponse;
+import cn.bluebubbles.store.vo.ProductDetailVo;
+import com.github.pagehelper.PageInfo;
+
 /**
  * @author yibo
  * @date 2019-01-12 14:39
  * @description
  */
-public class IProductService {
+public interface IProductService {
+    ServerResponse<ProductDetailVo> getProductDetail(Integer productId);
+
+    ServerResponse<PageInfo> getProductByKeywordCategory(String keyword, Integer categoryId, int pageNum, int pageSize, String orderBy);
 }

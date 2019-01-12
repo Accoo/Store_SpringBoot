@@ -1,5 +1,7 @@
 package cn.bluebubbles.store.common;
 
+import com.google.common.collect.Sets;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,8 +31,7 @@ public class Const {
      * 排列商品的顺序（按价格升序或降序）
      */
     public interface ProductListOrderBy {
-        // 0价格升序, 1价格降序
-        int LIST_ORDER = 0;
+        Set<String> PRICE_ORDER = Sets.newHashSet("price_desc","price_asc");
     }
 
     /**
