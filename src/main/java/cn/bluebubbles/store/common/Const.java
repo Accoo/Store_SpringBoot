@@ -18,6 +18,11 @@ public class Const {
     public static final String CURRENT_USER = "currentUser";
 
     /**
+     * Redis中session的有效时间,单位为秒(60 * 30 == 30分钟)
+     */
+    public static final int REDIS_SESSION_EXTIME = 60 * 30;
+
+    /**
      * 用户角色
      */
     public interface Role {

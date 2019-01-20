@@ -11,10 +11,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author yibo
  * @date 2019-01-11 17:03
- * @description 缓存用户重置密码时的token
+ * @description 缓存用户重置密码时的token(已经不用了,用Redis缓存代替)
  */
 public class TokenCache {
-    public static final String TOKEN_PREFIX = "TOKEN_";
+    public static final String TOKEN_PREFIX = "FORGET_PASSWORD_TOKEN_";
     private static Logger logger = LoggerFactory.getLogger(TokenCache.class);
     private static LoadingCache<String, String> loadingCache = CacheBuilder.newBuilder().initialCapacity(1000)
             .maximumSize(10000).expireAfterAccess(30, TimeUnit.MINUTES)

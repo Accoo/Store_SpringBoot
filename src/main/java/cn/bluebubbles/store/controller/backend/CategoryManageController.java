@@ -1,17 +1,20 @@
 package cn.bluebubbles.store.controller.backend;
 
-import cn.bluebubbles.store.common.Const;
 import cn.bluebubbles.store.common.ResponseCode;
 import cn.bluebubbles.store.common.ServerResponse;
 import cn.bluebubbles.store.pojo.User;
 import cn.bluebubbles.store.service.ICategoryService;
 import cn.bluebubbles.store.service.IUserService;
+import cn.bluebubbles.store.util.CookieUtil;
+import cn.bluebubbles.store.util.JsonUtil;
+import cn.bluebubbles.store.util.RedisPoolUtil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author yibo
@@ -30,15 +33,20 @@ public class CategoryManageController {
 
     /**
      * 添加品类
-     * @param session
+     * @param request
      * @param categoryName
      * @param parentId
      * @return
      */
     @RequestMapping("/add_category")
-    public ServerResponse<String> addCategory(HttpSession session, String categoryName,
-                                      @RequestParam(value = "parentId", defaultValue = "0") Integer parentId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> addCategory(HttpServletRequest request, String categoryName,
+                                              @RequestParam(value = "parentId", defaultValue = "0") Integer parentId) {
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登陆,请先登陆");
+        }
+        String userJson = RedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登陆,请先登陆");
         }
@@ -51,14 +59,19 @@ public class CategoryManageController {
 
     /**
      * 设置品类的名字
-     * @param session
+     * @param request
      * @param categoryId
      * @param categoryName
      * @return
      */
     @RequestMapping("/set_category_name")
-    public ServerResponse<String> setCategoryName(HttpSession session, Integer categoryId, String categoryName) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+    public ServerResponse<String> setCategoryName(HttpServletRequest request, Integer categoryId, String categoryName) {
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登陆,请先登陆");
+        }
+        String userJson = RedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登陆,请先登陆");
         }
@@ -71,14 +84,19 @@ public class CategoryManageController {
 
     /**
      * 获取子分类列表,不递归
-     * @param session
+     * @param request
      * @param categoryId
      * @return
      */
     @RequestMapping("/get_category")
-    public ServerResponse getChildrenParallelCategory(HttpSession session,
+    public ServerResponse getChildrenParallelCategory(HttpServletRequest request,
                                                      @RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登陆,请先登陆");
+        }
+        String userJson = RedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登陆,请先登陆");
         }
@@ -89,10 +107,21 @@ public class CategoryManageController {
         return ServerResponse.createByErrorMessage("无权限操作,需要管理员权限");
     }
 
+    /**
+     * 获取子分类列表,递归
+     * @param request
+     * @param categoryId
+     * @return
+     */
     @RequestMapping("/get_deep_category")
-    public ServerResponse getCategoryAndDeepChildrenCategory(HttpSession session,
+    public ServerResponse getCategoryAndDeepChildrenCategory(HttpServletRequest request,
                                                              @RequestParam(value = "categoryId", defaultValue = "0") Integer categoryId) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        String loginToken = CookieUtil.readLoginToken(request);
+        if (StringUtils.isEmpty(loginToken)) {
+            return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登陆,请先登陆");
+        }
+        String userJson = RedisPoolUtil.get(loginToken);
+        User user = JsonUtil.string2Obj(userJson, User.class);
         if (user == null) {
             return ServerResponse.createByErrorCodeMessage(ResponseCode.NEED_LOGIN.getCode(), "用户未登陆,请先登陆");
         }
