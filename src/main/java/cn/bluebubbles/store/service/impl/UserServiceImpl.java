@@ -7,6 +7,7 @@ import cn.bluebubbles.store.dao.UserMapper;
 import cn.bluebubbles.store.pojo.User;
 import cn.bluebubbles.store.service.IUserService;
 import cn.bluebubbles.store.util.MD5Util;
+import cn.bluebubbles.store.util.RedisPoolUtil;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -131,7 +132,7 @@ public class UserServiceImpl implements IUserService {
         if (resultCount > 0) {
             // 说明这个问题及答案是这个用户的，并且是正确的
             String forgetToken = UUID.randomUUID().toString();
-            TokenCache.setKey(TokenCache.TOKEN_PREFIX + username, forgetToken);
+            RedisPoolUtil.setex(TokenCache.TOKEN_PREFIX + username, forgetToken, 60 * 30);
             return ServerResponse.createBySuccess(forgetToken);
         }
         return ServerResponse.createByErrorMessage("问题答案错误");
@@ -154,7 +155,7 @@ public class UserServiceImpl implements IUserService {
             // 用户不存在
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
-        String token = TokenCache.getKey(TokenCache.TOKEN_PREFIX + username);
+        String token = RedisPoolUtil.get(TokenCache.TOKEN_PREFIX + username);
         if (StringUtils.isBlank(token)) {
             return ServerResponse.createByErrorMessage("token无效或过期");
         }
