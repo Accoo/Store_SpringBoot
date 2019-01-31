@@ -64,6 +64,6 @@
 
 支付宝官方文档中的当面付执行流程如下:
 
-![](https://github.com/yibo141/ssmcrud/raw/master/images/alipay_f2f.png)
+![](https://github.com/yibo141/Store_SpringBoot/raw/master/images/alipay_f2f.png)
 
 首先向支付宝请求预下单, 支付宝会返回一个支付二维码的链接, 将此链接转换为二维码图片并展示给用户. 如果用户扫描二维码图片支付后, 服务器接受支付宝的回调, 校验并判断支付是否成功, 如果成功则更改订单的支付状态, 失败则向客户端返回错误信息.
